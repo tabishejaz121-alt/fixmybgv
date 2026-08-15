@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" role="img" aria-hidden="true">
+  <circle cx="60" cy="60" r="57" stroke="#1E4FE0" stroke-width="2" stroke-dasharray="3 5"/>
+  <circle cx="60" cy="60" r="46" stroke="#0B1B3D" stroke-width="1.5"/>
+  <path id="stampCirclePath" d="M60,14 a46,46 0 1,1 -0.1,0" fill="none"/>
+  <text font-family="Inter, sans-serif" font-size="8.4" font-weight="700" letter-spacing="2.4" fill="#0B1B3D">
+    <textPath href="#stampCirclePath" startOffset="2%">CASE REVIEWED &#8226; FACTS BEFORE ACTION &#8226; </textPath>
+  </text>
+  <path d="M40 61l13 13 27-27" stroke="#1E4FE0" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
