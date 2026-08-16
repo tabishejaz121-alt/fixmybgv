@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="Fix My BGV mark">
-  <path d="M16 10c-3.3 0-6 2.7-6 6v32c0 3.3 2.7 6 6 6h18l-4-4H16a2 2 0 0 1-2-2V16a2 2 0 0 1 2-2h20v8a6 6 0 0 0 6 6h6v2h4V22L38 10H16z" fill="#071E3A"/>
-  <path d="M40 12.5V20a2 2 0 0 0 2 2h7.5L40 12.5z" fill="#1149D3"/>
-  <rect x="14" y="24" width="16" height="3.2" rx="1.6" fill="#071E3A"/>
-  <rect x="14" y="31" width="20" height="3.2" rx="1.6" fill="#071E3A"/>
-  <rect x="14" y="38" width="12" height="3.2" rx="1.6" fill="#071E3A"/>
-  <path d="M18 44.5l6.5 6.5L38 37.5" stroke="#1149D3" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-</svg>
