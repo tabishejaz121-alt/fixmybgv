@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initAnalyticsTracking();
 });
 
-/* ---------------- Hero mouse-parallax (index.html only) ----------------
+/* ---------------- Hero mouse-parallax (home page only) ----------------
    Uses the standalone CSS `translate` property rather than `transform`,
    so it composes with the existing idle-float @keyframes (which owns
    `transform`) instead of overriding it each frame. Fine-pointer only,
@@ -108,7 +108,7 @@ function initMagneticButtons() {
 }
 
 /* ==========================================================================
-   Hero entrance (index.html only) — plays once on load, never on scroll.
+   Hero entrance (home page only) — plays once on load, never on scroll.
    Pure progressive enhancement: if GSAP fails to load (blocked/offline),
    these elements simply render in their normal visible CSS state.
    ========================================================================== */
@@ -141,7 +141,7 @@ function initHeroIntro() {
 }
 
 /* ==========================================================================
-   Testimonial carousel (index.html)
+   Testimonial carousel (home page)
    ========================================================================== */
 const TESTIMONIALS_DATA = [
   { quote: "I finally understood what the real issue was — the biggest value was clarity and direction.", attrib: "Software Professional, Bengaluru" },
@@ -322,7 +322,7 @@ function initReveal() {
   items.forEach((el) => io.observe(el));
 }
 
-/* ---------------- Stat count-up (about.html) ----------------
+/* ---------------- Stat count-up (about page) ----------------
    Elements with data-count-to="N" count up from 0 once scrolled into view.
    Reads any trailing non-digit suffix already in the element's text (+, %)
    and keeps it, so the markup can just say "300+" or "100%" and still work
@@ -421,8 +421,8 @@ function initWhatsAppFab() {
    popup first. Fires once per browser session, and never on the booking
    form or the thank-you page where it would just be an interruption. */
 function initEngagementTriggers() {
-  const path = location.pathname.split("/").pop() || "index.html";
-  if (path === "book.html" || path === "thank-you.html") return;
+  const path = currentPath();
+  if (path === "/book" || path === "/thank-you") return;
   if (sessionStorage.getItem("fixmybgv_popup_shown")) return;
 
   const trigger = () => {
@@ -454,9 +454,16 @@ function initEngagementTriggers() {
   }
 }
 
+/* Clean URLs: "/about", "/about.html" and "/about/" all resolve to "/about";
+   the home page ("/", "/index", "/index.html") resolves to "/". */
+function currentPath() {
+  const slug = location.pathname.replace(/\/+$/, "").split("/").pop().replace(/\.html$/, "");
+  return !slug || slug === "index" ? "/" : "/" + slug;
+}
+
 /* ---------------- Active nav link ---------------- */
 function initActiveNav() {
-  const path = location.pathname.split("/").pop() || "index.html";
+  const path = currentPath();
   document.querySelectorAll("[data-nav-link]").forEach((a) => {
     const target = a.getAttribute("data-nav-link");
     if (target === path) {
@@ -597,7 +604,7 @@ function initWhatsAppLinks() {
 
 /* ==========================================================================
    Booking / Intake form — Name, Mobile, Email, Issue in detail.
-   Two copies share this same wiring: the inline form on book.html (for
+   Two copies share this same wiring: the inline form on /book (for
    anyone who lands there directly) and the site-wide popup modal built by
    initBookingModal() below. Neither redirects anywhere — submit saves the
    lead to a Google Sheet, opens WhatsApp with the details pre-filled, and
@@ -612,9 +619,9 @@ function initBookingForm() {
   if (serviceField && preselect) {
     serviceField.value =
       preselect === "review"
-        ? "BGV / Employment Record Case Review — ₹1999"
+        ? "BGV / Employment Record Case Review — ₹999"
         : preselect === "strategy"
-        ? "Resolution Strategy & Drafting Support — ₹3999"
+        ? "Resolution Strategy & Drafting Support — ₹1999"
         : "";
   }
   wireIntakeForm(form);
@@ -711,7 +718,7 @@ function initThankYouPage() {
 /* ==========================================================================
    Site-wide booking modal — every "Book" link on every page (header, mobile
    nav, footer, bottom nav, hero/price CTAs, the engagement popup pills) opens
-   this in-page form instead of navigating to book.html. book.html itself
+   this in-page form instead of navigating to /book. /book itself
    keeps its own inline copy of the form for direct visits; clicking a Book
    link while already there just scrolls down to it.
    ========================================================================== */
@@ -731,7 +738,7 @@ function closeBookingModal() {
 }
 
 /* Just the two options, price only — anyone who wants the full breakdown
-   (what's included, situations covered, etc.) is sent to services.html via
+   (what's included, situations covered, etc.) is sent to /services via
    the plain link below the picker, rather than replicating that much
    content inside a popup. */
 function bookingPlanPickHTML() {
@@ -739,15 +746,23 @@ function bookingPlanPickHTML() {
     <div class="plan-pick-grid">
       <button type="button" class="plan-pick-card" data-select-service="review">
         <h3>BGV / Employment Record Case Review</h3>
-        <div class="plan-pick-price">₹1999</div>
+        <div class="plan-pick-price-row">
+          <span class="plan-pick-old">₹1999</span>
+          <span class="plan-pick-off">50% OFF</span>
+        </div>
+        <div class="plan-pick-price">₹999</div>
       </button>
       <button type="button" class="plan-pick-card" data-select-service="strategy">
         <h3>Resolution Strategy &amp; Drafting Support</h3>
-        <div class="plan-pick-price">₹3999</div>
+        <div class="plan-pick-price-row">
+          <span class="plan-pick-old">₹3999</span>
+          <span class="plan-pick-off">50% OFF</span>
+        </div>
+        <div class="plan-pick-price">₹1999</div>
       </button>
     </div>
     <p class="text-center plan-details-link-wrap">
-      <a href="services.html" class="plan-details-link">Want the full details of each plan? <span>See Services →</span></a>
+      <a href="/services" class="plan-details-link">Want the full details of each plan? <span>See Services →</span></a>
     </p>`;
 }
 
@@ -761,11 +776,11 @@ function showBookingStep(overlay, step) {
 }
 
 function initBookingModal() {
-  const path = location.pathname.split("/").pop() || "index.html";
-  const bookLinks = [...document.querySelectorAll('a[href^="book.html"]')];
+  const path = currentPath();
+  const bookLinks = [...document.querySelectorAll('a[href^="/book"]')];
   if (!bookLinks.length) return;
 
-  if (path === "book.html") {
+  if (path === "/book") {
     bookLinks.forEach((link) => {
       link.addEventListener("click", (e) => {
         e.preventDefault();
@@ -833,8 +848,8 @@ function initBookingModal() {
   overlay.addEventListener("click", (e) => { if (e.target === overlay) closeBookingModal(); });
 
   const serviceLabels = {
-    review: "BGV / Employment Record Case Review — ₹1999",
-    strategy: "Resolution Strategy & Drafting Support — ₹3999",
+    review: "BGV / Employment Record Case Review — ₹999",
+    strategy: "Resolution Strategy & Drafting Support — ₹1999",
   };
   overlay.querySelectorAll("[data-select-service]").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -957,7 +972,7 @@ function initCookieConsent() {
   banner.setAttribute("role", "region");
   banner.setAttribute("aria-label", "Cookie consent");
   banner.innerHTML = `
-    <p>We use essential cookies to run this site. With your permission, we'd also like to use optional cookies to understand how it's used, see our <a href="disclaimer.html#confidentiality">Confidentiality</a> notice for details.</p>
+    <p>We use essential cookies to run this site. With your permission, we'd also like to use optional cookies to understand how it's used, see our <a href="/disclaimer#confidentiality">Confidentiality</a> notice for details.</p>
     <div class="cookie-banner-actions">
       <button type="button" class="btn btn-ghost" data-cookie-action="manage">Manage Preferences</button>
       <button type="button" class="btn btn-outline" data-cookie-action="reject">Reject Non-Essential</button>

@@ -725,6 +725,9 @@ body:has(.mobile-nav.is-open) .site-header.is-hidden { transform: none; }
   display: inline-block; font-family: var(--font-head); font-size: 34px; color: var(--blue); font-weight: 700;
   background: var(--blue-50); padding: 4px 16px; border-radius: var(--r-md);
 }
+.price-old-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.price-old { font-size: 18px; font-weight: 600; color: var(--text-muted); text-decoration: line-through; text-decoration-color: var(--red); text-decoration-thickness: 2px; }
+.price-off { font-size: 12px; font-weight: 700; letter-spacing: .04em; color: var(--green); background: var(--green-bg); padding: 3px 10px; border-radius: var(--r-full); }
 .price-note { color: var(--text-muted); font-size: 13.5px; margin-top: 4px; }
 .price-tagline { border-left: 3px solid var(--blue); padding-left: 14px; margin: 20px 0; font-size: 14.5px; color: var(--text); }
 .check-list { display: flex; flex-direction: column; gap: 10px; margin: 18px 0 8px; }
@@ -1099,6 +1102,9 @@ table.compare td.feature-col { color: var(--text); }
 .plan-pick-card:hover { border-color: var(--blue); background: var(--blue-50); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
 .plan-pick-card h3 { font-size: 15px; margin-bottom: 12px; line-height: 1.35; }
 .plan-pick-price { font-family: var(--font-head); font-size: 27px; font-weight: 700; color: var(--blue); }
+.plan-pick-price-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 2px; }
+.plan-pick-old { font-size: 16px; font-weight: 600; color: var(--text-muted); text-decoration: line-through; text-decoration-color: var(--red); text-decoration-thickness: 2px; }
+.plan-pick-off { font-size: 11.5px; font-weight: 700; letter-spacing: .04em; color: var(--green); background: var(--green-bg); padding: 3px 8px; border-radius: var(--r-full); }
 .plan-details-link-wrap { margin-top: 20px; }
 .plan-details-link { font-size: 13.5px; color: var(--text-muted); }
 .plan-details-link span { color: var(--blue); font-weight: 700; }
