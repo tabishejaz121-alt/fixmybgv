@@ -1,0 +1,52 @@
+# Fix My BGV — Hostinger (Apache / LiteSpeed) config
+# Clean URLs: /about serves about.html; old /about.html links 301 to /about.
+
+Options -MultiViews -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+RewriteEngine On
+
+# Never expose git metadata or the Apps Script source
+RewriteRule (^|/)\.git(/|$) - [F,L]
+<FilesMatch "\.(gs|md)$">
+  Require all denied
+</FilesMatch>
+
+# Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# www.fixmybgv.com -> fixmybgv.com (matches canonical URLs)
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+# /index and /index.html -> /
+RewriteCond %{THE_REQUEST} \s/+index(\.html)?[\s?] [NC]
+RewriteRule ^ / [L,R=301]
+
+# /page.html -> /page (query string is kept)
+RewriteCond %{THE_REQUEST} \s/+([^?\s]+?)\.html[\s?] [NC]
+RewriteRule ^ /%1 [L,R=301]
+
+# /page/ -> /page (but leave real folders alone)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)/$ /$1 [L,R=301]
+
+# /page -> serve page.html internally
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+)$ $1.html [L]
+
+# Caching for static assets
+<IfModule mod_expires.c>
+  ExpiresActive On
+  # CSS/JS filenames aren't versioned, so keep this short so updates show up fast
+  ExpiresByType text/css "access plus 1 hour"
+  ExpiresByType application/javascript "access plus 1 hour"
+  ExpiresByType image/png "access plus 30 days"
+  ExpiresByType image/svg+xml "access plus 30 days"
+  ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
